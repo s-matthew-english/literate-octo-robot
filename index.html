@@ -31,11 +31,16 @@
 
     <h1>Administrative Sub-Regions of Europe</h1>
 
-    <select id="json_sources" name="json_sources">
-        <option value ="nuts1" selected>Source 1</option>
-        <option value ="nuts2">Source 2</option>
-    <!--     <option value ="source3.json">Source 3</option> -->
-    </select>​
+
+<form>
+<select id="json_sources" name="json_sources" >
+    <option value ="nuts1" selected>Source 1</option>
+    <option value ="nuts2" >Source 2</option>
+</select>
+<form>
+
+
+
 
 
     <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -71,10 +76,12 @@
             .attr("d", path);
 
 
-
     var dropdown = d3.select("#json_sources")
+
+
+    //start of function
     var change = function() {
-      var source = dropdown.node().options[dropdown.node().selectedIndex].value;
+    var source = dropdown.node().options[dropdown.node().selectedIndex].value;
 
 
     var str1 = source;
@@ -105,8 +112,19 @@
           data[d.GEO] = d['2013'];
         });
 
+
+        //clear way for the regeneration
+        d3.selectAll("path").remove();
+        //recreate those map lines
+        svg.append("path")
+            .datum(graticule)
+            .attr("class", "graticule")
+            .attr("d", path);
+
+
         console.info(data);
-        svg.selectAll("path")
+        svg
+          .selectAll("path")
           .data(land.features)
           .enter()
           .append("path")
@@ -157,23 +175,17 @@
       })
     }
 
+
+
     dropdown.on("change", change)
-    change(); //trigger json on load
+    change(); //call that change function once
 
 
 
     </script>
 
 
-
-
-
-
     </body>
-
-    <!-- // d3.json("nuts2.json", function(error, europe) {
-
-    // }); -->
 
 
 
