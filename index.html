@@ -68,10 +68,21 @@ var path = d3.geo.path()
 
 
 // Find new colours here: http://colorbrewer2.org/
-var scale =  d3.scale.quantize().domain([10,60]).range(colorbrewer.PuRd[3]);
-var svg = d3.select("body").append("svg")
-    .attr("width", width)
-    .attr("height", height);
+var scale =  d3.scale
+               .quantize()
+               .domain([10,60])
+               .range(colorbrewer.PuRd[3]);
+
+var svg = d3.select("body")
+            .append("svg")
+            .attr("width", width, "100%")
+            .attr("height", height, "100%")
+            .call(d3.behavior.zoom().on("zoom", function () {
+    svg.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")")
+  }))
+            .append("g")
+
+
 
 
     svg.append("path")
