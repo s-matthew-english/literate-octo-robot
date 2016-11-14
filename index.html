@@ -1,214 +1,228 @@
-<!-- DATA:: https://gist.github.com/rveciana/5919944 -->
+    <!-- DATA:: https://gist.github.com/rveciana/5919944 -->
 
-<!DOCTYPE html>
-<meta charset="utf-8">
-<style>
+    <!DOCTYPE html>
+    <meta charset="utf-8">
+    <style>
 
-.border {
-  stroke: #000;
-  fill: none;
+    .border {
+      stroke: #000;
+      fill: none;
 
-}
-.graticule {
-  fill: none;
-  stroke: #777;
-  stroke-width: .5px;
-  stroke-opacity: .5;
-}
+    }
+    .graticule {
+      fill: none;
+      stroke: #777;
+      stroke-width: .5px;
+      stroke-opacity: .5;
+    }
 
-div.tooltip {
-  position: absolute;
-  text-align: center;
-  width: 84px;
-  height: 64px;
-  padding: 2px;
-  font: 12px sans-serif;
-  background: lightgrey;
-  border: 0px;
-  border-radius: 8px;
-  pointer-events: none;
-}
-</style>
-<body>
+    div.tooltip {
+      position: absolute;
+      text-align: center;
+      width: 84px;
+      height: 64px;
+      padding: 2px;
+      font: 12px sans-serif;
+      background: lightgrey;
+      border: 0px;
+      border-radius: 8px;
+      pointer-events: none;
+    }
+    </style>
+    <body>
 
-<h1>Administrative Sub-Regions of Europe</h1>
-
-
-<form>
-<select id="json_sources" name="json_sources" >
-<option value ="nuts0" selected >Source 0</option>
-<option value ="nuts1" >Source 1</option>
-<option value ="nuts2" >Source 2</option>
-<option value ="nuts3" >Source 3</option>
-</select>
-<form>
+    <h1>Administrative Sub-Regions of Europe</h1>
 
 
-
-
-
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="http://d3js.org/topojson.v1.min.js"></script>
-<script src="http://d3js.org/colorbrewer.v1.min.js"></script>
-<script src="https://cdn.rawgit.com/rveciana/d3-composite-projections/v0.2.0/composite-projections.min.js"></script>
-<script>
-
-var div = d3.select("body").append("div")
-        .attr("class", "tooltip")
-        .style("opacity", 0);
-
-var width = 600,
-    height = 500;
-
-var projection = d3.geo.conicConformalEurope();
-var graticule = d3.geo.graticule();
-
-var path = d3.geo.path()
-    .projection(projection);
-
-
-// Find new colours here: http://colorbrewer2.org/
-var scale =  d3.scale
-               .quantize()
-               .domain([10,60])
-               .range(colorbrewer.PuRd[3]);
-
-var svg = d3.select("body")
-            .append("svg")
-            .attr("width", width, "100%")
-            .attr("height", height, "100%")
-            .call(d3.behavior.zoom().on("zoom", function () {
-    svg.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")")
-  }))
-            .append("g")
+    <form>
+    <select id="json_sources" name="json_sources" >
+    <option value ="nuts0" selected >Source 0</option>
+    <option value ="nuts1" >Source 1</option>
+    <option value ="nuts2" >Source 2</option>
+    <option value ="nuts3" >Source 3</option>
+    </select>
+    <form>
 
 
 
 
-    svg.append("path")
-        .datum(graticule)
-        .attr("class", "graticule")
-        .attr("d", path);
+
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://d3js.org/topojson.v1.min.js"></script>
+    <script src="http://d3js.org/colorbrewer.v1.min.js"></script>
+    <script src="https://cdn.rawgit.com/rveciana/d3-composite-projections/v0.2.0/composite-projections.min.js"></script>
+    <script>
+
+    var div = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+
+    var width = 600,
+        height = 500;
+
+    var projection = d3.geo.conicConformalEurope();
+    var graticule = d3.geo.graticule();
+
+    var path = d3.geo.path()
+        .projection(projection);
 
 
-var dropdown = d3.select("#json_sources")
+    // Find new colours here: http://colorbrewer2.org/
+    var scale =  d3.scale
+                   .quantize()
+                   .domain([10,60])
+                   .range(colorbrewer.PuRd[3]);
+
+    var svg = d3.select("body")
+                .append("svg")
+                .attr("width", width, "100%")
+                .attr("height", height, "100%")
+                .call(
+                      d3.
+                      behavior.
+                      zoom().
+                      on("zoom", function () {
+                                                svg.attr("transform", "translate(" +
+
+                                                     d3.event.translate +
+
+                                                     ")" + " scale(" +
+
+                                                     d3.event.scale +
+                                                     ")")
+                                              }
+                          )
+                      )
+                .on("dblclick.zoom", null)
+                .append("g")
 
 
-//start of function
-var change = function() {
-var source = dropdown.node().options[dropdown.node().selectedIndex].value;
 
 
-var str1 = source;
-var str2 = ".json";
-var file = str1.concat(str2);
-console.log(file);
+        svg.append("path")
+            .datum(graticule)
+            .attr("class", "graticule")
+            .attr("d", path);
 
 
-  d3.json(file, function(error, europe) {
-
-  d3.csv("povertry_rate.csv", function(error, povrate) {
+    var dropdown = d3.select("#json_sources")
 
 
-    //change the map to apadpt to the nuts file
-    if (source == "nuts1") {
+    //start of function
+    var change = function() {
+    var source = dropdown.node().options[dropdown.node().selectedIndex].value;
 
-    var land = topojson.feature(europe, europe.objects.nuts1);
 
-    } else if (source == "nuts2") {
+    var str1 = source;
+    var str2 = ".json";
+    var file = str1.concat(str2);
+    console.log(file);
 
-    var land = topojson.feature(europe, europe.objects.nuts2);
 
-    } else if (source == "nuts3") {
+      d3.json(file, function(error, europe) {
 
-    var land = topojson.feature(europe, europe.objects.nuts3);
+      d3.csv("povertry_rate.csv", function(error, povrate) {
 
-    } else if (source == "nuts0") {
 
-    var land = topojson.feature(europe, europe.objects.nuts0);
+        //change the map to apadpt to the nuts file
+        if (source == "nuts1") {
 
+        var land = topojson.feature(europe, europe.objects.nuts1);
+
+        } else if (source == "nuts2") {
+
+        var land = topojson.feature(europe, europe.objects.nuts2);
+
+        } else if (source == "nuts3") {
+
+        var land = topojson.feature(europe, europe.objects.nuts3);
+
+        } else if (source == "nuts0") {
+
+        var land = topojson.feature(europe, europe.objects.nuts0);
+
+        }
+
+
+        data = {};
+        povrate.forEach(function(d) {
+          data[d.GEO] = d['2013'];
+        });
+
+
+        //clear way for the regeneration
+        d3.selectAll("path").remove();
+        //recreate those map lines
+        svg.append("path")
+            .datum(graticule)
+            .attr("class", "graticule")
+            .attr("d", path);
+
+
+        console.info(data);
+        svg
+          .selectAll("path")
+          .data(land.features)
+          .enter()
+          .append("path")
+          .attr("d", path)
+          .style("stroke","#000")
+          .style("stroke-width",".5px")
+          .style("fill",function(d){
+                var value = data[d.id];
+                if (isNaN(value)){
+                  value = data[d.id.substring(0,2)];
+                }
+                if (isNaN(value)){
+                  return "#fff";
+                }
+
+                return scale(value);
+                })
+          .on("mouseover", function(d,i) {
+                var value = data[d.id];
+                if (isNaN(value)){
+                  value = data[d.id.substring(0,2)];
+                }
+                div.transition()
+                    .duration(200)
+                    .style("opacity", 0.9);
+                div.html("<b>"+d.properties.name+"</b><br/>" + value + "%")
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 28) + "px");
+            })
+          .on("mouseout", function(d,i) {
+              div.transition()
+                  .duration(500)
+                  .style("opacity", 0);
+            });
+
+            svg
+              .append("path")
+                .style("fill","none")
+                .style("stroke","#000")
+                .attr("d", projection.getCompositionBorders());
+
+
+      });
+
+
+
+
+      })
     }
 
 
-    data = {};
-    povrate.forEach(function(d) {
-      data[d.GEO] = d['2013'];
-    });
 
-
-    //clear way for the regeneration
-    d3.selectAll("path").remove();
-    //recreate those map lines
-    svg.append("path")
-        .datum(graticule)
-        .attr("class", "graticule")
-        .attr("d", path);
-
-
-    console.info(data);
-    svg
-      .selectAll("path")
-      .data(land.features)
-      .enter()
-      .append("path")
-      .attr("d", path)
-      .style("stroke","#000")
-      .style("stroke-width",".5px")
-      .style("fill",function(d){
-            var value = data[d.id];
-            if (isNaN(value)){
-              value = data[d.id.substring(0,2)];
-            }
-            if (isNaN(value)){
-              return "#fff";
-            }
-
-            return scale(value);
-            })
-      .on("mouseover", function(d,i) {
-            var value = data[d.id];
-            if (isNaN(value)){
-              value = data[d.id.substring(0,2)];
-            }
-            div.transition()
-                .duration(200)
-                .style("opacity", 0.9);
-            div.html("<b>"+d.properties.name+"</b><br/>" + value + "%")
-                .style("left", (d3.event.pageX) + "px")
-                .style("top", (d3.event.pageY - 28) + "px");
-        })
-      .on("mouseout", function(d,i) {
-          div.transition()
-              .duration(500)
-              .style("opacity", 0);
-        });
-
-        svg
-          .append("path")
-            .style("fill","none")
-            .style("stroke","#000")
-            .attr("d", projection.getCompositionBorders());
-
-
-  });
+    dropdown.on("change", change)
+    change(); //call that change function once
 
 
 
-
-  })
-}
+    </script>
 
 
-
-dropdown.on("change", change)
-change(); //call that change function once
-
-
-
-</script>
-
-
-</body>
+    </body>
 
 
 
