@@ -1,77 +1,88 @@
-    <!-- DATA:: https://gist.github.com/rveciana/5919944 -->
-
-    <!DOCTYPE html>
-    <meta charset="utf-8">
-    <style>
-
-    .border {
-      stroke: #000;
-      fill: none;
-
-    }
-    .graticule {
-      fill: none;
-      stroke: #777;
-      stroke-width: .5px;
-      stroke-opacity: .5;
-    }
-
-    div.tooltip {
-      position: absolute;
-      text-align: center;
-      width: 84px;
-      height: 64px;
-      padding: 2px;
-      font: 12px sans-serif;
-      background: lightgrey;
-      border: 0px;
-      border-radius: 8px;
-      pointer-events: none;
-    }
-    </style>
-    <body>
-
-    <h1>Administrative Sub-Regions of Europe</h1>
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
 
 
-    <form>
-    <select id="json_sources" name="json_sources" >
-    <option value ="nuts0" selected >Source 0</option>
-    <option value ="nuts1" >Source 1</option>
-    <option value ="nuts2" >Source 2</option>
-    <option value ="nuts3" >Source 3</option>
-    </select>
-    <form>
+<style>
+  .border {
+    stroke: #000;
+    fill: none;
+
+  }
+  .graticule {
+    fill: none;
+    stroke: #777;
+    stroke-width: .5px;
+    stroke-opacity: .5;
+  }
+
+  div.tooltip {
+    position: absolute;
+    text-align: center;
+    width: 84px;
+    height: 64px;
+    padding: 2px;
+    font: 12px sans-serif;
+    background: lightgrey;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+  }
+</style>
+
+</head>
+
+<body>
 
 
 
+<h1>Administrative Sub-Regions of Europe</h1>
+
+<!-- this is the form at the bottom to change the NUTS -->
+<form>
+<select id="json_sources" name="json_sources" >
+<option value ="nuts0" selected >Source 0</option>
+<option value ="nuts1" >Source 1</option>
+<option value ="nuts2" >Source 2</option>
+<option value ="nuts3" >Source 3</option>
+</select>
+<form>
 
 
-    <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script src="http://d3js.org/topojson.v1.min.js"></script>
-    <script src="http://d3js.org/colorbrewer.v1.min.js"></script>
-    <script src="https://cdn.rawgit.com/rveciana/d3-composite-projections/v0.2.0/composite-projections.min.js"></script>
-    <script>
 
-    var div = d3.select("body").append("div")
-            .attr("class", "tooltip")
-            .style("opacity", 0);
-
-    var width = 600,
-        height = 500;
-
-    var projection = d3.geo.conicConformalEurope();
-    var graticule = d3.geo.graticule();
-
-    var path = d3.geo.path()
-        .projection(projection);
+<!-- spinner -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.0.1/spin.min.js'></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+<script src="http://d3js.org/colorbrewer.v1.min.js"></script>
+<script src="https://cdn.rawgit.com/rveciana/d3-composite-projections/v0.2.0/composite-projections.min.js"></script>
 
 
-    // Find new colours here: http://colorbrewer2.org/
-    var scale =  d3.scale
-                   .quantize()
-                   .domain([10,60])
-                   .range(colorbrewer.PuRd[3]);
+<!-- why do we need this? -->
+<section id='chart'>
+</section>
+
+<script>
+
+  var div = d3.select("body").append("div")
+          .attr("class", "tooltip")
+          .style("opacity", 0);
+
+  var width = 600,
+      height = 500;
+
+  var projection = d3.geo.conicConformalEurope();
+  var graticule = d3.geo.graticule();
+
+  var path = d3.geo.path()
+      .projection(projection);
+
+  // Find new colours here: http://colorbrewer2.org/
+  var scale =  d3.scale
+                 .quantize()
+                 .domain([10,60])
+                 .range(colorbrewer.PuRd[3]);
 
     var svg = d3.select("body")
                 .append("svg")
@@ -97,22 +108,80 @@
                 .append("g")
 
 
-
-
+//what the hell does this do?
         svg.append("path")
             .datum(graticule)
             .attr("class", "graticule")
             .attr("d", path);
 
+  // pretty self spoken
+  var dropdown = d3.select("#json_sources")
 
-    var dropdown = d3.select("#json_sources")
+  // config references SPINNER RELATED
+  var chartConfig = {
+      target : 'chart',
+      data_url : './nuts0.json',
+      width: 600,
+      height: 500,
+      val: 90
+  };
+
+  // loader settings SPINNER RELATED
+  var opts = {
+    lines: 9, // The number of lines to draw
+    length: 9, // The length of each line
+    width: 5, // The line thickness
+    radius: 14, // The radius of the inner circle
+    color: '#EE3124', // #rgb or #rrggbb or array of colors
+    speed: 1.9, // Rounds per second
+    trail: 40, // Afterglow percentage
+    className: 'spinner', // The CSS class to assign to the spinner
+  };
+
+  // SPINNER RELATED
+  var target = document.getElementById(chartConfig.target);
+
+// KICK OFF callback function wrapped for loader in 'init' function
+function init() {
+
+// trigger loader initial spinner
+var spinner = new Spinner(opts).spin(target);
+
+        // load json data and trigger callback
+        d3.json(chartConfig.data_url, function(data) {
+
+            // stop spin.js loader
+            spinner.stop();
+
+            // instantiate chart within callback
+            chart(data);
+
+        });
+}
+
+//call that init function we define above
+init();
+
+//here where all the real stuff happens
+//in fact all that init stuff is just legacy
+//from the spinner example
+function chart(data) {
 
 
-    //start of function
+
+    //start of map making function
     var change = function() {
+
+
+
+// trigger loader of the spinner
+var spinner = new Spinner(opts).spin(target);
+
+
+    // did they change the NUTS?
     var source = dropdown.node().options[dropdown.node().selectedIndex].value;
 
-
+    //necessary data processing
     var str1 = source;
     var str2 = ".json";
     var file = str1.concat(str2);
@@ -126,21 +195,13 @@
 
         //change the map to apadpt to the nuts file
         if (source == "nuts1") {
-
         var land = topojson.feature(europe, europe.objects.nuts1);
-
         } else if (source == "nuts2") {
-
         var land = topojson.feature(europe, europe.objects.nuts2);
-
         } else if (source == "nuts3") {
-
         var land = topojson.feature(europe, europe.objects.nuts3);
-
         } else if (source == "nuts0") {
-
         var land = topojson.feature(europe, europe.objects.nuts0);
-
         }
 
 
@@ -158,6 +219,8 @@
             .attr("class", "graticule")
             .attr("d", path);
 
+// stop spin.js loader
+spinner.stop();
 
         console.info(data);
         svg
@@ -214,18 +277,20 @@
 
 
 
+
+
+
+
     dropdown.on("change", change)
     change(); //call that change function once
 
 
 
-    </script>
 
 
-    </body>
+}
 
+</script>
 
-
-
-
-
+</body>
+</html>
