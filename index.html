@@ -5,6 +5,12 @@
 
 
 <style>
+
+svg {
+  display: block;
+  margin: auto;
+  border: 1px solid gray;
+}
   .border {
     stroke: #000;
     fill: none;
@@ -16,6 +22,7 @@
     stroke-width: .5px;
     stroke-opacity: .5;
   }
+
 
   div.tooltip {
     position: absolute;
@@ -84,6 +91,9 @@
                  .domain([10,60])
                  .range(colorbrewer.PuRd[3]);
 
+
+
+
     var svg = d3.select("body")
                 .append("svg")
                 .attr("width", width, "100%")
@@ -105,7 +115,10 @@
                           )
                       )
                 .on("dblclick.zoom", null)
-                .append("g")
+                .append("g");
+
+
+
 
 
 //what the hell does this do?
@@ -128,12 +141,12 @@
 
   // loader settings SPINNER RELATED
   var opts = {
-    lines: 9, // The number of lines to draw
-    length: 9, // The length of each line
-    width: 5, // The line thickness
-    radius: 14, // The radius of the inner circle
-    color: '#EE3124', // #rgb or #rrggbb or array of colors
-    speed: 1.9, // Rounds per second
+    lines: 10, // The number of lines to draw
+    length: 10, // The length of each line
+    width: 8, // The line thickness
+    radius: 18, // The radius of the inner circle
+    color: '#000000', // #rgb or #rrggbb or array of colors
+    speed: 1.2, // Rounds per second
     trail: 40, // Afterglow percentage
     className: 'spinner', // The CSS class to assign to the spinner
   };
