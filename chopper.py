@@ -5,28 +5,27 @@ from pprint import pprint
 with open('prettyPrint.txt') as data_file:
     data = json.load(data_file)
 
-locations = defaultdict(list)
+locations = defaultdict(int)
 
 for item in data['data']:
     location = item['relationships']['location']['data']['id']
-    locations[location].append(item['id'])
+    locations[location] += 1
 
 pprint(locations)
 
 
-# import json
-# from pprint import pprint
-
-# with open('data.json') as data_file:
-#     data = json.load(data_file)
 
 
+# print each id that corresponds to a single location
+#
+# for item in data['data']:
+#     location = item['relationships']['location']['data']['id']
+#     locations[location].append(item['id'])
+#
+# pprint(locations)
 
-#     for item in data["data"]:
-#         # count up by location
-#         for item['relationships']['location']:
 
-#         item['id']
+
 
 
 
@@ -44,3 +43,24 @@ pprint(locations)
 #         print( job )
 
 
+
+
+
+#######################################################
+#   old file
+#######################################################
+# import json
+# from pprint import pprint
+#
+# with open('data.json') as data_file:
+#     data = json.load(data_file)
+#
+#
+#
+#     for item in data["data"]:
+#         # count up by location
+#         for item['relationships']['location']:
+#
+#         item['id']
+#
+########################################################
