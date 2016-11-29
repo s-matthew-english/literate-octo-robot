@@ -1,13 +1,40 @@
 import json
+from collections import defaultdict
 from pprint import pprint
 
-with open('data.json') as data_file:
+with open('prettyPrint.txt') as data_file:
     data = json.load(data_file)
 
+locations = defaultdict(list)
 
-    for item in data["data"]:
-        print(item['id'], item['relationships']['location'])
+for item in data['data']:
+    location = item['relationships']['location']['data']['id']
+    locations[location].append(item['id'])
 
+pprint(locations)
+
+
+# import json
+# from pprint import pprint
+
+# with open('data.json') as data_file:
+#     data = json.load(data_file)
+
+
+
+#     for item in data["data"]:
+#         # count up by location
+#         for item['relationships']['location']:
+
+#         item['id']
+
+
+
+
+# Get the location data and id
+#
+# for item in data["data"]:
+#     print(item['id'], item['relationships']['location'])
 
 
 # This prints the job title, just some practice
