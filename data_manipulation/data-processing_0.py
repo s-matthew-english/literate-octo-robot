@@ -23,6 +23,8 @@ def process_locations_included(data):
     return return_list    # return list of tuples
 
 
+
+
 # load the data from file once
 with open('data-science.txt') as data_file:
     data = json.load(data_file)
@@ -41,16 +43,17 @@ output = []
 for record in records:
     id, name, coord = record
     references = locations[id]   # lookup the references in the dict
-    line = str(id) + "  " + str(name) + "   " + str(coord) + "  " + str(references) + "\n"
+    line = str(id) + "|" + str(name) + "|" + str(coord) + "|" + str(references) + "\n"
     if line not in output:
         output.append(line)
 
 
 # print the output to a file
-with open('MASTER-CHOPPER-OUTPUT.txt', 'w') as file_:
+with open('job-numbers-by-location.txt', 'w') as file_:
     for l in output:
         if not ("None") in l:
-            file_.write(l)
+            if not ("[0, 0]") in l:
+                file_.write(l)
 file_.close()
 
 
