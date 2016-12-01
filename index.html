@@ -133,7 +133,7 @@ svg {
   // config references SPINNER RELATED
   var chartConfig = {
       target : 'chart',
-      data_url : './nuts0.json',
+      data_url : './application_data/nuts0.json',
       width: 600,
       height: 500,
       val: 90
@@ -195,15 +195,16 @@ var spinner = new Spinner(opts).spin(target);
     var source = dropdown.node().options[dropdown.node().selectedIndex].value;
 
     //necessary data processing
+    var str0 = "./application_data/";
     var str1 = source;
     var str2 = ".json";
-    var file = str1.concat(str2);
+    var file = str0.concat(str1.concat(str2));
     console.log(file);
 
 
       d3.json(file, function(error, europe) {
 
-      d3.csv("povertry_rate.csv", function(error, povrate) {
+      d3.csv("./application_data/povertry_rate.csv", function(error, povrate) {
 
 
         //change the map to apadpt to the nuts file
