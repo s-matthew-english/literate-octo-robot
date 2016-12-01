@@ -1,0 +1,85 @@
+3 Victoria [51.503378, -0.139134]
+
+             3: 2673,
+
+
+http://api.geonames.org/countrySubdivision?lat=48.82278&lng=9.2152&username=s.matthew.english
+
+
+<geonames>
+<countrySubdivision>
+<countryCode>DE</countryCode>
+<countryName>Germany</countryName>
+<adminCode1>01</adminCode1>
+<adminName1>Baden-Württemberg</adminName1>
+<code type="FIPS10-4">01</code>
+<code type="ISO3166-2">BW</code>
+<distance>0.0</distance>
+</countrySubdivision>
+</geonames>
+
+
+GET ALSO THE GEONAMES ID--> and that is the data set :)
+
+
+
+
+
+52 Cubitt Town [51.505199, -0.018848]
+
+             52: 23,
+
+
+5 United Kingdom [54.75844, -2.69531]
+
+             5: 459,
+
+
+296 Bucharest [44.43225, 26.10626]
+
+             296: 9,
+
+
+352 Vilich-Müldorf [50.75024, 7.15283]
+
+             352: 4,
+
+
+48 Gut Scheibenhardt [49.001249, 8.412378]
+
+             48: 3,
+
+
+314 Westerham [48.0601, 11.62219]
+
+             314: 9,
+
+
+45 Honartsdeich [53.557429, 9.987297]
+
+            45: 34,
+
+
+9779 Martinsried [48.137418, 11.555737]
+
+             9779: 11,
+
+
+343 Brussels [50.85045, 4.34878]
+
+             343: 27,
+
+
+563 Russell Square [51.519403, -0.133906]
+
+             563: 20,
+
+
+11 Farringdon [51.51807, -0.10852]
+
+             11: 154,
+
+
+609 Fröttmaning [48.16652, 11.59038]
+
+             609: 3,
