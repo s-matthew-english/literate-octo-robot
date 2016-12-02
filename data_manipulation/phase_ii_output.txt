@@ -167,7 +167,7 @@ code: GB-ENG, jobs: 1
 code: GB-ENG, jobs: 2
 code: GB-ENG, jobs: 10
 code: GB-ENG, jobs: 7
-code: FR-IDF, jobs: 82
+code: FR-J, jobs: 82
 code: GB-ENG, jobs: 1
 code: GB-ENG, jobs: 12
 code: GB-ENG, jobs: 5
